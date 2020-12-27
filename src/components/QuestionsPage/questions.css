@@ -1,0 +1,44 @@
+.alice-carousel__next-btn, .alice-carousel__prev-btn{
+    font-size: 5rem;
+    padding-right: 2rem;
+    bottom: 20rem;
+    position: relative;
+    width: 20%;
+}
+.alice-carousel__next-btn{
+    text-align: right;
+    left: 46rem;
+}
+.alice-carousel__prev-btn{
+    text-align: left;
+    left: 3rem;
+}
+.alice-carousel__wrapper{
+    height: 90vh;
+}
+.question-container{
+    position: relative;
+    width: 50%;
+    margin: 0 auto;
+    top: 7rem;
+    text-align: center;
+    height: 50vh;
+}
+.radiobuttons{
+    flex-wrap: nowrap !important;
+    flex-direction: initial !important;
+}
+.noOverflow{
+    overflow: hidden;
+}
+.btnStyle{
+    text-transform: inherit !important;
+}
+.iconNext{
+    font-size: 0.7rem !important;
+    margin-left: 0.5rem;
+}
+.btn-container{
+    padding: 1rem 3rem;
+    text-align: right;
+}
