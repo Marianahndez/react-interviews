@@ -6,7 +6,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
-import ButtonPersonAdd from '../ModalPersonAdd';
+import ModalPersonAdd from '../ModalPersonAdd';
 
 const useStyles = makeStyles((theme)=> ({
     center: {
@@ -59,14 +59,14 @@ function InterviewerDashboard(){
     return(
         <React.Fragment>
             <div className={classes.center}>
-                <p className={classes.mainText}>No se ha registrado ningun candidato</p>
-                <ButtonPersonAdd actionType="Add Candidate" />
-                <p className={classes.helpText}>Haz click aqui para agregar</p>
+                <p className={classes.mainText}>No candidate has been registered</p>
+                <ModalPersonAdd actionType="Add Candidate" />
+                <p className={classes.helpText}>Click here to add</p>
             </div>
 
             <div className={classes.buttonsContainer}>
-                <Button variant="contained" color="primary" onClick={handleBack} className={classes.btnStyle}><ArrowBackIosIcon className={classes.iconBack} /> Regresar </Button>
-                <Button variant="contained" color="primary" onClick={handleNext} className={classes.btnStyleRight}>Continuar <ArrowForwardIosIcon className={classes.iconNext} /></Button>
+                <Button variant="contained" color="primary" onClick={handleBack} className={classes.btnStyle}><ArrowBackIosIcon className={classes.iconBack} /> Back </Button>
+                <Button variant="contained" color="primary" onClick={handleNext} className={classes.btnStyleRight}> Continue <ArrowForwardIosIcon className={classes.iconNext} /></Button>
             </div>
         </React.Fragment>
     )

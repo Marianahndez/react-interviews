@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
-import ButtonPersonAdd from '../ModalPersonAdd';
+import ModalPersonAdd from '../ModalPersonAdd';
 
 const useStyles = makeStyles((theme)=> ({
     center: {
@@ -34,11 +37,22 @@ const useStyles = makeStyles((theme)=> ({
         fontStyle: 'italic',
         marginTop: '1.3rem',
     },
+    root: {
+        minWidth: 275,
+    },
+    title: {
+        fontSize: 14,
+    },
+    pos: {
+        marginBottom: 12,
+    },
 }));
 
-function InterviewerDashboard(){
+function InterviewerDashboard({ reducer }){
+    const [interviewersList, setInterviewersList] = useState(reducer);
     let history = useHistory();
     const classes = useStyles();
+    console.log('dashboard ', interviewersList)
 
     const handleNext = () =>{
         history.push("/interview")
@@ -46,13 +60,40 @@ function InterviewerDashboard(){
 
     return(
         <React.Fragment>
+            {interviewersList.length !== 0 ?
+            <div>
+                <h2>Interviewers</h2>
+                {interviewersList.map((element, i)=>{
+                    return (
+                    <Card className={classes.root}>
+                        <CardContent>
+                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            ID: {element.id}
+                            </Typography>
+                            <Typography variant="h5" component="h2">
+                            {element.name}
+                            </Typography>
+                            <Typography className={classes.pos} color="textSecondary">
+                            {element.eid}
+                            </Typography>
+                            <Typography variant="body2" component="p">
+                            Candidates interviewed: {element.candidates}
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                    )
+                }
+                )}
+            </div> :
             <div className={classes.center}>
-                <p className={classes.mainText}>No se ha registrado ningun entrevistador</p>
-                <ButtonPersonAdd actionType="Add Interviewer" />
-                <p className={classes.helpText}>Haz click aqui para agregar</p>
-            </div>
+                <p className={classes.mainText}>No candidate has been registered</p>
+                <ModalPersonAdd actionType="Add Interviewer" />
+                <p className={classes.helpText}>Click here to add</p>
+            </div> 
+            }
+            
             <div className={classes.buttonsContainer}>
-                <Button variant="contained" color="primary" onClick={handleNext} className={classes.btnStyle}>Continuar <ArrowForwardIosIcon className={classes.iconNext} /> </Button>
+                <Button variant="contained" color="primary" onClick={handleNext} className={classes.btnStyle}> Continue <ArrowForwardIosIcon className={classes.iconNext} /> </Button>
             </div>
         </React.Fragment>
     )

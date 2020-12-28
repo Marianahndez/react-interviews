@@ -38,7 +38,7 @@ function Questions(){
     };
 
     const handleNext = () =>{
-        history.push("/")
+        history.push("/summary")
     }
 
     return(
@@ -50,12 +50,12 @@ function Questions(){
                         <h5>{question.content}</h5>
                         <FormControl component="fieldset">
                             <RadioGroup value={selectedValue} onChange={handleChange} className="radiobuttons">
-                                <FormControlLabel value="true" control={<Radio />} label="Correcto" />
-                                <FormControlLabel value="false" control={<Radio />} label="Incorrecto" />
+                                <FormControlLabel value="true" control={<Radio />} label="Correct" />
+                                <FormControlLabel value="false" control={<Radio />} label="Incorrect" />
                             </RadioGroup>
                             <TextField
                             id="outlined-multiline-static"
-                            label="Comentarios"
+                            label="Comments"
                             multiline
                             rows={4}
                             defaultValue="Default Value"
@@ -66,7 +66,7 @@ function Questions(){
                 ))}
             </AliceCarousel>
             <div className="btn-container">
-                <Button variant="contained" color="primary" onClick={handleNext} className="btnStyle">Finalizar <ArrowForwardIosIcon className="iconNext" /> </Button>
+                <Button variant="contained" color="primary" onClick={handleNext} className="btnStyle"> Finalize <ArrowForwardIosIcon className="iconNext" /> </Button>
             </div>
         </React.Fragment>
     )

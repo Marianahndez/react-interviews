@@ -1,9 +1,13 @@
-import React, { useContext, useReducer, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import Fab from '@material-ui/core/Fab';
 import { Dialog, DialogContent, TextField, InputLabel, Select, MenuItem, FormControl, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { addInterviewer, editInterviewer, deleteInterviewer } from '../../Redux/Interviews/interviewActions';
+
 
 const modalStyles = makeStyles((theme)=> ({
     titleFormat: {
@@ -42,7 +46,7 @@ function Modal({
             <h2 className={classes.titleFormat}>{type}</h2>
             <DialogContent>
             { type === 'Add Interviewer' ?
-                <form noValidate autoComplete="off" className="form" onSubmit={handleAddInterviewer}>
+                <form autoComplete="off" className="form" onSubmit={handleAddInterviewer}>
                     <TextField name="name" label="Name" value={person.name} onChange={onChangeInput} required className={classes.inputForm} />
                     <TextField name="id" label="ID" value={person.id} onChange={onChangeInput} required className={classes.inputForm}/>
                     <TextField name="eid" label="EID" value={person.eid} onChange={onChangeInput} required className={classes.inputForm}/>
@@ -52,26 +56,28 @@ function Modal({
                     </div>
                 </form>
                 : 
-            <form noValidate autoComplete="off" className="form" onSubmit={handleAddCandidate}>
-                <TextField name="name" label="Name" value={person.name} onChange={onChangeInput} required className={classes.inputForm} />
-                    <TextField name="email" label="Email" value={person.email} onChange={onChangeInput} required className={classes.inputForm}/>
-                    <TextField name="type" label="Type" value={person.type} onChange={onChangeInput} required className={classes.inputForm}/>
-                    <div className={classes.btnsContainer}>
-                        <Button variant="contained" color="primary" type="submit" onClick={handleAddCandidate} className={classes.btnStyle}>Save</Button>
-                        <Button variant="contained" onClick={closeDialog} className={classes.btnStyle}>Cancel</Button>
-                    </div>
-            </form>
+                <form autoComplete="off" className="form" onSubmit={handleAddCandidate}>
+                    <TextField name="name" label="Name" value={person.name} onChange={onChangeInput} required className={classes.inputForm} />
+                        <TextField name="email" label="Email" value={person.email} onChange={onChangeInput} required className={classes.inputForm}/>
+        
+                        <TextField name="type" label="Type" value={person.type} onChange={onChangeInput} required className={classes.inputForm}/>
+                        <div className={classes.btnsContainer}>
+                            <Button variant="contained" color="primary" type="submit" onClick={handleAddCandidate} className={classes.btnStyle}>Save</Button>
+                            <Button variant="contained" onClick={closeDialog} className={classes.btnStyle}>Cancel</Button>
+                        </div>
+                </form>
             }
             </DialogContent>
         </Dialog>
     )
 }
 
-function ModalPersonAdd({ actionType }){
+function ModalPersonAdd(props){
     const [typeOfPerson, setTypeOfPerson] = useState("");
     const [open, setOpen] = useState(false);
+    const dispatch = useDispatch();
     const [person, setPerson] = useState({
-        interviewerName: '',
+        name: '',
         id: 1,
         eid: '',
         candidates: 0       
@@ -85,11 +91,14 @@ function ModalPersonAdd({ actionType }){
         interviewerId: 1       
     });
 
+    useEffect(()=>{
+        console.log('modal state: ', props)
+    },[])
     const handleInputChange = (e) => {
-        const newPost = {...person};
-        newPost[e.target.name] = e.target.value;
+        const newInterviewer = {...person};
+        newInterviewer[e.target.name] = e.target.value;
         e.preventDefault();
-        setPerson(newPost)
+        setPerson(newInterviewer)
     }
 
     const handleModalClose = () => {
@@ -102,8 +111,16 @@ function ModalPersonAdd({ actionType }){
         setTypeOfPerson(x)
     }
 
-    const handleAddInterviewer = () => {
-        console.log('add Interviewer')
+    const postInterviewer = (e) => {
+        e.preventDefault();
+        dispatch(addInterviewer(person));
+        setPerson({
+            name: '',
+            id: 0,
+            eid: '',
+            candidates: 0       
+        })
+        setOpen(false)
     }
 
     const handleAddCandidate = () => {
@@ -118,11 +135,11 @@ function ModalPersonAdd({ actionType }){
             person={person}
             onChangeInput={handleInputChange}
             closeDialog={handleModalClose} 
-            handleAddInterviewer={handleAddInterviewer}
+            handleAddInterviewer={postInterviewer}
             handleAddCandidate={handleAddCandidate}
             />
 
-            <Fab color="primary" aria-label="add" onClick={()=> handleTypeOfPerson(actionType)}>
+            <Fab color="primary" aria-label="add" onClick={()=> handleTypeOfPerson(props.actionType)}>
                 <PersonAddOutlinedIcon />
             </Fab>
         </React.Fragment>

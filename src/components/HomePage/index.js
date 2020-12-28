@@ -1,52 +1,47 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import { useEffect, useState } from 'react';
 import {Route, Switch} from 'react-router-dom';
 import { BrowserRouter as Router } from "react-router-dom";
+import { Provider } from 'react-redux';
+import { useDispatch, connect } from 'react-redux';
+
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+
+import {InterviewContext} from '../../Redux/context';
 
 import InterviewerDashboard from '../InterviewersDashboard';
 import CandidatesDashboard from '../CandidatesDashboard';
 import QuestionsPage from '../QuestionsPage';
+import SummaryPage from '../SummaryPage';
 
-const routes = [
-  {
-    path: '/',
-    exact: true,
-    main: Template,
-    props: 'Interviewers Dashboard',
-    id: 1
-  },
-  {
-    path: '/interview',
-    exact: true,
-    main: Template,
-    props: 'Candidates Dashboard',
-    id: 2
-  },
-  {
-    path: '/questions',
-    exact: true,
-    main: Template,
-    props: 'Questions',
-    id: 3
-  },
-]
+function mapStateToProps(state){
+  return {
+    interviews: state.interview,
+    interviewers: state.interviewer,
+    candidates: state.candidate
+  }
+}
 
-function Template({ title, keyword }){
-  const [view, setView] = useState(keyword);
-  
+function Template(props){
+  const [view, setView] = useState(props.keyword);
+  const dispatch = useDispatch();
+
   useEffect(()=> {
-    setView(keyword)
-  },[keyword])
+    setView(props.keyword)
+    console.log('connected: ', props.interviews);
+    console.log('connected2: ', props.interviewers);
+    console.log('connected3: ', props.candidates);
+    console.log('props: ', props);
+  },[props])
 
   return(
-    <React.Fragment>
+    <InterviewContext>
       <AppBar position="static">
         <Toolbar variant="dense">
           <Typography variant="p" color="inherit">
-            {title}
+            {props.title}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -54,43 +49,20 @@ function Template({ title, keyword }){
       {(() => {
         switch (view) {
           case 1:
-              return (
-                <InterviewerDashboard />
-              )
+            return ( <InterviewerDashboard reducer={props.interviewers} /> )
           case 2:
-              return (
-                <CandidatesDashboard />
-              )
+            return ( <CandidatesDashboard /> )
           case 3:
-              return (
-                <QuestionsPage />
-              )
+            return ( <QuestionsPage /> )
+          case 4:
+            return ( <SummaryPage /> )
           default:
-              return (
-                <div>Not available.</div>
-              )
+            return ( <div>Not available.</div> )
         }
       })()}
       </div>
-    </React.Fragment>
+    </InterviewContext>
   )
 }
 
-function HomePage() {
-  return (
-    <Router>
-      <Switch>
-        {routes.map((route, index)=> (
-          <Route 
-            key={index}
-            path={route.path}
-            exact={route.exact}
-            children={<route.main title={route.props} keyword={route.id} />}
-          />
-        ))}
-      </Switch>
-    </Router>
-  );
-}
-
-export default HomePage;
+export default connect(mapStateToProps)(Template);
