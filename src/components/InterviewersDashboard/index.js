@@ -82,7 +82,7 @@ function InterviewerDashboard({ reducer }){
     })
 
     const handleNext = () =>{
-        history.push("/interview")
+        history.push("/candidates")
     }
 
     const handleSelectCard = (i) =>{

@@ -6,10 +6,14 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { DataGrid } from '@material-ui/data-grid';
+import ArrowRightOutlinedIcon from '@material-ui/icons/ArrowRightOutlined';
 
 import ModalPersonAdd from '../ModalPersonAdd';
 
 const useStyles = makeStyles((theme)=> ({
+    a: {
+        textDecoration: 'none'
+    },
     center: {
         textAlign: 'center',
         height: '60vh',
@@ -64,29 +68,53 @@ function CandidatesDashboard({ reducer }){
     let history = useHistory();
     const classes = useStyles();
     const [idSelected, setID] = useState();
-    const [candidateSelected, setCandidateSelected] = useState();
-    const [url, setURL] = useState();
+    // const [candidateSelected, setCandidateSelected] = useState();
+    const [urlQuestions, setURLQuestions] = useState();
+    const [urlInformation, setURLInformation] = useState();
 
     useEffect(()=> {
-        let index = [];
-        index = reducer.filter(i => {
-            return i.id === idSelected
-        });
-        setCandidateSelected(index);
+        // let index = [];
+        // index = reducer.filter(i => {
+        //     return i.id === idSelected
+        // });
+        // setCandidateSelected(index);
 
-        let newURL = "/questions/" + idSelected;
-        setURL(newURL);
+        let urlQuestion = "/questions/" + idSelected;
+        setURLQuestions(urlQuestion);
     },[idSelected])
 
     const handleBack = () => {
         history.push("/")
     }
+
+    const handleSeeMore = (params) =>{
+        let id = params.rowIndex;
+        history.push("/candidate/" + id)
+    }
       
     const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'id', headerName: 'ID', width: 50 },
         { field: 'name', headerName: 'Full Name', width: 350 },
         { field: 'email', headerName: 'Email', width: 350 },
-        { field: 'typeCandidate', headerName: 'Type Of Candidate', width: 390 },
+        { field: 'typeCandidate', headerName: 'Type Of Candidate', width: 200 },
+        { 
+            field: 'button',
+            headerName: 'Candidates Information', 
+            width: 240,
+            renderCell: (params) => (
+                <Link to={{ pathname: urlInformation }} className={classes.a}> 
+                    <Button
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    style={{ width: '100%', textTransform: 'inherit'}}
+                    onClick={() =>handleSeeMore(params)}
+                    > 
+                    See More <ArrowRightOutlinedIcon /> 
+                    </Button>
+                </Link>
+            )
+        },
     ];
 
     return(
@@ -94,7 +122,7 @@ function CandidatesDashboard({ reducer }){
             {reducer.length !== 0 ?
                 <div className={classes.tableContainer}>
                     <div className={classes.floatButton}>
-                        <ModalPersonAdd actionType="Add Candidate" />
+                        <ModalPersonAdd actionType="Add Candidate" id={reducer.length} />
                     </div>
                     <h2 className={classes.titleBold}>Canidates List</h2>
                     <DataGrid 
@@ -113,7 +141,7 @@ function CandidatesDashboard({ reducer }){
                 <React.Fragment>
                     <div className={classes.center}>
                         <p className={classes.mainText}>No candidate has been registered</p>
-                        <ModalPersonAdd actionType="Add Candidate" />
+                        <ModalPersonAdd actionType="Add Candidate" id={reducer.length} />
                         <p className={classes.helpText}>Click here to add</p>
                     </div>
 
@@ -121,7 +149,7 @@ function CandidatesDashboard({ reducer }){
             }
             <div className={classes.buttonsContainer}>
                 <Button variant="contained" color="secondary" onClick={handleBack} className={classes.btnStyle}><ArrowBackIosIcon className={classes.iconBack} /> Back </Button>
-                <Link to={{ pathname: url }}> 
+                <Link to={{ pathname: urlQuestions }}> 
                     <Button variant="contained" color="secondary" className={classes.btnStyleRight}> 
                         Continue <ArrowForwardIosIcon className={classes.iconNext} />
                     </Button>

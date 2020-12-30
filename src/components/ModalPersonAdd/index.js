@@ -87,13 +87,15 @@ function ModalPersonAdd(props){
         candidates: 0       
     });
     const [candidate, setCandidate] = useState({
+        id: id,
         name: '',
         email: '',
         typeCandidate: '',
         skills: [],
         score: 20,
         interviewerId: null,
-        questions: []
+        questions: [],
+        button: ''
     });
 
     useEffect(()=>{
@@ -144,13 +146,15 @@ function ModalPersonAdd(props){
         e.preventDefault();
         dispatch(addCandidate(candidate));
         setCandidate({
+            id: null,
             name: '',
             email: '',
             typeCandidate: '',
             skills: [],
             score: 20,
             interviewerId: null,
-            questions: []
+            questions: [],
+            button: ''
         })
         setOpen(false)
     }

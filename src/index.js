@@ -18,25 +18,32 @@ const routes = [
     id: 1
   },
   {
-    path: '/interview',
+    path: '/candidates',
     exact: true,
     main: Template,
     props: 'Candidates Dashboard',
     id: 2
   },
   {
+    path: '/candidate/:slug',
+    exact: true,
+    main: Template,
+    props: 'Candidate Information',
+    id: 3
+  },
+  {
     path: '/questions/:slug',
     exact: true,
     main: Template,
     props: 'Interview Questions',
-    id: 3
+    id: 4
   },
   {
     path: '/summary',
     exact: true,
     main: Template,
     props: 'Summary of the Interview',
-    id: 4
+    id: 5
   },
 ]
 

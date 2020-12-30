@@ -11,6 +11,7 @@ import {InterviewContext} from '../../Redux/context';
 
 import InterviewerDashboard from '../InterviewersDashboard';
 import CandidatesDashboard from '../CandidatesDashboard';
+import CandidateInformation from '../CandidateInformation';
 import QuestionsPage from '../QuestionsPage';
 import SummaryPage from '../SummaryPage';
 
@@ -79,8 +80,10 @@ function Template(props){
           case 2:
             return ( <CandidatesDashboard reducer={candidatesList} /> )
           case 3:
-            return ( <QuestionsPage reducer={candidatesList} /> )
+            return ( <CandidateInformation reducer={candidatesList} /> )
           case 4:
+            return ( <QuestionsPage reducer={candidatesList} /> )
+          case 5:
             return ( <SummaryPage /> )
           default:
             return ( <div>Not available.</div> )
