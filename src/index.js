@@ -25,7 +25,7 @@ const routes = [
     id: 2
   },
   {
-    path: '/questions',
+    path: '/questions/:slug',
     exact: true,
     main: Template,
     props: 'Interview Questions',
@@ -47,10 +47,10 @@ ReactDOM.render(
         <Switch>
           {routes.map((route, index)=> (
             <Route 
-              key={index}
-              path={route.path}
-              exact={route.exact}
-              children={<route.main title={route.props} keyword={route.id} />}
+            key={index}
+            path={route.path}
+            exact={route.exact}
+            children={<route.main title={route.props} keyword={route.id} />}
             />
           ))}
         </Switch>

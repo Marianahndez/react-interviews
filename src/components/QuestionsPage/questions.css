@@ -27,12 +27,15 @@
 .radiobuttons{
     flex-wrap: nowrap !important;
     flex-direction: initial !important;
+    margin: 20px auto;
+    width: 35%;
 }
 .noOverflow{
     overflow: hidden;
 }
 .btnStyle{
     text-transform: inherit !important;
+    padding: 0.7rem 1.2rem !important;
 }
 .iconNext{
     font-size: 0.7rem !important;
@@ -41,4 +44,13 @@
 .btn-container{
     padding: 1rem 3rem;
     text-align: right;
+    width: 130%;
+    position: absolute;
+    top: 100%;
+}
+form{
+    width: 100%;
+}
+.makeStyles-mainContent-1{
+    padding: 0 40px;
 }

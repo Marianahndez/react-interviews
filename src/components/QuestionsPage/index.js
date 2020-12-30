@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AliceCarousel from 'react-alice-carousel';
 import "react-alice-carousel/lib/alice-carousel.css";
 import './questions.css'
@@ -6,39 +6,64 @@ import Radio from '@material-ui/core/Radio';
 import { useState } from 'react';
 import { RadioGroup } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import { useDispatch } from 'react-redux';
+import { editCandidate } from '../../Redux/Interview/interviewActions';
 
 const questions = [
     {
-        id: 1,
+        id: 0,
         topic: 'Javascript',
         content: 'Bla bla bla question here?',
-        correct: false,
+        correct: "false",
         comments: ''
     },
     {
-        id: 2,
+        id: 1,
         topic: 'Node JS',
         content: 'Bla bla bla question here?',
-        correct: false,
+        correct: "false",
         comments: ''
     },
 ]
 
-function Questions(){
+function Questions(props){
     let history = useHistory();
-    const [selectedValue, setSelectedValue] = useState('true');
+    let { slug } = useParams();
+    const dispatch = useDispatch();
+    const [selectedValue, setSelectedValue] = useState("true");
+    const [candidate, setCandidate] = useState({});
 
-    const handleChange = (event) => {
-        setSelectedValue(event.target.value);
+    useEffect(()=>{
+        let aux = {}
+
+        aux = props.reducer.filter(i => {
+            return i.id === parseInt(slug)
+        });
+        setCandidate(aux);
+    },[])
+
+    const handleChange = (event) => {        
+        questions[event.target.id].correct = event.target.value;
+        setSelectedValue(event.target.value)
     };
 
     const handleNext = () =>{
         history.push("/summary")
+    }
+
+    const handleAnswers = (e) => {
+        e.preventDefault();
+        candidate[slug].questions = questions;
+        dispatch(editCandidate(candidate));
+        history.push("/summary")
+    }
+
+    const handleChangeComments = (e) => {
+        questions[e.target.id].comments = e.target.value;
     }
 
     return(
@@ -48,26 +73,30 @@ function Questions(){
                     <div className="question-container">
                         <h2>{question.topic}</h2>
                         <h5>{question.content}</h5>
-                        <FormControl component="fieldset">
+                        <form onSubmit={handleAnswers}>
                             <RadioGroup value={selectedValue} onChange={handleChange} className="radiobuttons">
-                                <FormControlLabel value="true" control={<Radio />} label="Correct" />
-                                <FormControlLabel value="false" control={<Radio />} label="Incorrect" />
+                                <FormControlLabel control={<Radio value="true" id={i} />} label="Correct" />
+                                <FormControlLabel control={<Radio value="false" id={i} />} label="Incorrect" />
                             </RadioGroup>
                             <TextField
-                            id="outlined-multiline-static"
+                            id={i}
                             label="Comments"
+                            name="comments"
+                            value={questions.comments}
+                            onChange={handleChangeComments}
                             multiline
                             rows={4}
                             defaultValue="Default Value"
                             variant="outlined"
                             />
-                        </FormControl>
+                            <div className="btn-container">
+                                <Button variant="contained" color="secondary" type="submit" className="btnStyle"> Finalize <ArrowForwardIosIcon className="iconNext" /> </Button>
+                            </div>
+                        </form>
                     </div>
                 ))}
             </AliceCarousel>
-            <div className="btn-container">
-                <Button variant="contained" color="primary" onClick={handleNext} className="btnStyle"> Finalize <ArrowForwardIosIcon className="iconNext" /> </Button>
-            </div>
+            
         </React.Fragment>
     )
 }

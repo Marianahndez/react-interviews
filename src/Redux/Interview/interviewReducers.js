@@ -4,14 +4,14 @@ import {
 
 const INITIAL_STATE = [];
 
-const reducer = (state = INITIAL_STATE, action) => {
+const interviewReducers = (state = INITIAL_STATE, action) => {
     switch(action.type){
         case SAVE_INTEVIEW:
             console.log('state interview: ', state);
-            return state;
+            return state
         default:
-            return state;
+            return state
     }
 }
 
-export default reducer;
+export default interviewReducers;

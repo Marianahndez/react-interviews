@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React, { createContext, useContext } from 'react';
 
 export const InterviewData = {
     interviewers: [],
@@ -15,3 +15,5 @@ export const InterviewContext = (props) => {
         </mainContext.Provider>
     )
 }
+
+export const useStateValue = () => useContext(mainContext);
