@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+import { 
+    makeStyles,
+    Button, 
+    Card, 
+    CardContent, 
+    Typography, 
+    Grid 
+} from '@material-ui/core';
 
 import ModalPersonAdd from '../ModalPersonAdd';
-import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme)=> ({
     center: {
@@ -84,7 +85,6 @@ function InterviewerDashboard({ reducer }){
 
     const handleNext = (i) =>{
         const aux = reducer.findIndex(index => index.id === i)
-
         history.push("/candidates/" + aux)
     }
 
@@ -99,14 +99,14 @@ function InterviewerDashboard({ reducer }){
     return(
         <React.Fragment>
             {reducer.length !== 0 ?
-            <React.Fragment>
-                <h2 className={classes.titleBold}>Interviewers List</h2>
-                <div className={classes.floatButton}>
-                    <ModalPersonAdd actionType="Add Interviewer" id={reducer.length} active={`${(active.id !== null) ? active.id : null}`} reducer={reducer} />
-                </div>
-                <Grid container className={classes.mainGrid}>
-                {reducer.map((element, i)=>{
-                    return (
+                <React.Fragment>
+                    <h2 className={classes.titleBold}>Interviewers List</h2>
+                    <div className={classes.floatButton}>
+                        <ModalPersonAdd actionType="Add Interviewer" id={reducer.length} active={`${(active.id !== null) ? active.id : null}`} reducer={reducer} />
+                    </div>
+                    <Grid container className={classes.mainGrid}>
+                    {reducer.map((element, i)=>{
+                        return (
                         <Grid item xs={3} className={classes.cards}>
                             <Card className={`${(i === active.id) ? classes.active : classes.root}`} onClick={() => handleSelectCard(i)}>
                                 <CardContent>
@@ -125,20 +125,22 @@ function InterviewerDashboard({ reducer }){
                                 </CardContent>
                             </Card>
                         </Grid>
-                    )
-                })}
-                </Grid>
-            </React.Fragment> :
-            <div className={classes.center}>
-                <p className={classes.mainText}>No interviewer has been registered</p>
-                <ModalPersonAdd actionType="Add Interviewer" id={0} active={`${(active.id !== null) ? active.id : null}`} reducer={reducer} />
-                <p className={classes.helpText}>Click here to add</p>
-            </div> }
+                        )
+                    })}
+                    </Grid>
+                </React.Fragment> 
+            :
+                <div className={classes.center}>
+                    <p className={classes.mainText}>No interviewer has been registered</p>
+                    <ModalPersonAdd actionType="Add Interviewer" id={0} active={`${(active.id !== null) ? active.id : null}`} reducer={reducer} />
+                    <p className={classes.helpText}>Click here to add</p>
+                </div> 
+            }
 
-            <div className={classes.buttonsContainer}>
-                <Button variant="contained" color="secondary" disabled={(active.id === null)} onClick={()=>handleNext(active.id)} className={classes.btnStyle}> Continue <ArrowForwardIosIcon className={classes.iconNext} /> </Button>
-            </div>
-        </React.Fragment>
+                <div className={classes.buttonsContainer}>
+                    <Button variant="contained" color="secondary" disabled={(active.id === null)} onClick={()=>handleNext(active.id)} className={classes.btnStyle}> Continue <ArrowForwardIosIcon className={classes.iconNext} /> </Button>
+                </div>
+            </React.Fragment>
     )
 }
 

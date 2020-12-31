@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
 import AliceCarousel from 'react-alice-carousel';
 import "react-alice-carousel/lib/alice-carousel.css";
 import './questions.css'
-import Radio from '@material-ui/core/Radio';
-import { useState } from 'react';
-import { RadioGroup } from '@material-ui/core';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import TextField from '@material-ui/core/TextField';
-import { useHistory, useParams } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import { useDispatch } from 'react-redux';
+
 import { editCandidate } from '../../Redux/Interview/interviewActions';
+
+import { 
+    RadioGroup, 
+    Radio, 
+    TextField, 
+    Button, 
+    FormControlLabel 
+} from '@material-ui/core';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 const questions = [
     {

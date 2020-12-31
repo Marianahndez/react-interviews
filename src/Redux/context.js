@@ -2,8 +2,7 @@ import React, { createContext, useContext } from 'react';
 
 export const InterviewData = {
     interviewers: [],
-    candidates: [],
-    questionsMock: []
+    candidates: []
 }
 
 export const mainContext = createContext(InterviewData);

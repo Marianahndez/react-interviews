@@ -3,16 +3,27 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { editCandidate } from '../../Redux/Interview/interviewActions';
 
-import Grid from '@material-ui/core/Grid';
-import Fab from '@material-ui/core/Fab';
-import { Dialog, DialogContent, FormControlLabel, FormGroup, Button, Card, CardContent, Avatar, Checkbox, ListItemIcon, ListItem, ListItemAvatar } from '@material-ui/core';
-
+import { 
+    makeStyles,
+    Dialog, 
+    Grid,
+    Fab,
+    DialogContent, 
+    FormControlLabel, 
+    FormGroup, 
+    Button, 
+    Card, 
+    CardContent, 
+    Avatar, 
+    Checkbox, 
+    ListItemIcon, 
+    ListItem 
+} from '@material-ui/core';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExtensionIcon from '@material-ui/icons/Extension';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import StarRateRoundedIcon from '@material-ui/icons/StarRateRounded';
-import { makeStyles } from '@material-ui/core';
 
 import ModalPersonAdd from '../ModalPersonAdd';
 
@@ -243,7 +254,7 @@ function CandidateInformation(props){
                     <p className={classes.infoText}>{candidate.email}</p>
                     <h2 className={classes.title}>Type of candidate</h2>
                     <p className={classes.infoText}>{candidate.typeCandidate}</p>
-                    
+
                     <Fab variant="extended" color="secondary" aria-label="add" onClick={handleSeeSummary} disabled={(candidate.summary === false)} className={classes.summaryBtn}>
                         <InsertDriveFileOutlinedIcon className={classes.extendedIcon} /> See Summary
                     </Fab>

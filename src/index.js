@@ -18,7 +18,7 @@ const routes = [
     id: 1
   },
   {
-    path: '/candidates/:slug',
+    path: '/candidates/:idInterviewer',
     exact: true,
     main: Template,
     props: 'Candidates Dashboard',

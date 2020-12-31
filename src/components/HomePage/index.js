@@ -2,12 +2,16 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { InterviewContext } from '../../Redux/context';
 
-import {InterviewContext} from '../../Redux/context';
+import { 
+  makeStyles, 
+  createMuiTheme, 
+  MuiThemeProvider,
+  AppBar,
+  Toolbar,
+  Typography
+} from '@material-ui/core';
 
 import InterviewerDashboard from '../InterviewersDashboard';
 import CandidatesDashboard from '../CandidatesDashboard';
@@ -16,26 +20,22 @@ import QuestionsPage from '../QuestionsPage';
 import SummaryPage from '../SummaryPage';
 
 function mapStateToProps(state){
-  console.log('state home: ', state);
   return {
     interviews: state.interview,
     interviewers: state.interviewer,
     candidates: state.candidate
   }
 }
+
 const theme = createMuiTheme({
   palette: {
     primary: {
-      // main: '#bd00ff'
       main: '#9c33c1'
     },
     secondary: {
       main: '#8400b2',
       dark: '#5c007c'
     },
-    info: {
-      main: '#9c33c1'
-    }
   }
 })
 
@@ -46,14 +46,10 @@ const homeStyles = makeStyles((theme)=> ({
 }))
 
 
-
 function Template(props){
-  // console.log('state home: ', props)
-
   const [view, setView] = useState(props.keyword);
   const [interviewersList, setInterviewersList] = useState(props.interviewers);
   const [candidatesList, setCandidatesList] = useState(props.candidates);
-  // const interviewersList = useSelector(state => state.interviewer)
   const classes = homeStyles();
 
   useEffect(()=> {

@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from 'react';
-
-import { makeStyles } from '@material-ui/core/styles';
-import { Button, Grid, ListItem, ListItemIcon, TextField, Dialog, DialogContent, Fab } from '@material-ui/core';
-import StarRateRoundedIcon from '@material-ui/icons/StarRateRounded';
-import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
-
 import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
 import { editCandidate } from '../../Redux/Interview/interviewActions';
+
+import { 
+    makeStyles, 
+    Button, 
+    Grid, 
+    ListItem, 
+    ListItemIcon, 
+    TextField, 
+    Dialog, 
+    DialogContent, 
+    Fab 
+} from '@material-ui/core';
+import StarRateRoundedIcon from '@material-ui/icons/StarRateRounded';
+import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 
 const summaryStyles = makeStyles((theme)=> ({
     firstRow: {
@@ -166,11 +175,9 @@ function Results({reducer}){
             return i.id === parseInt(idCandidate)
         });
         setCandidate(aux[0]);
-        console.log('summary > ', reducer);
     },[idCandidate])
 
     const handleChangeComments = (e) =>{
-        //save comments by candidate, turn 'true' summary
         candidate.summaryComments = e.target.value;
         dispatch(editCandidate(candidate))
     }
@@ -178,7 +185,6 @@ function Results({reducer}){
     const handleSaveInterview = (e) =>{
         candidate.summary = true;
         e.preventDefault();
-        console.log('save commnt', candidate)
         history.push("/")
     }
 

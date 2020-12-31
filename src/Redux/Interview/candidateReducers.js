@@ -1,10 +1,6 @@
 import {
     ADD_CANDIDATE,
     EDIT_CANDIDATE,
-    ADD_SKILLS,
-    EDIT_SKILLS,
-    SAVE_QUESTIONS,
-    ADD_COMMENT_SUMMARY,
 } from './interviewTypes';
 
 const INITIAL_STATE = [];

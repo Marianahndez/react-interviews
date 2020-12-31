@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, Link, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
 import { editCandidate } from '../../Redux/Interview/interviewActions';
 
+import { makeStyles, Button } from '@material-ui/core';
+import { DataGrid } from '@material-ui/data-grid';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import { DataGrid } from '@material-ui/data-grid';
 import ArrowRightOutlinedIcon from '@material-ui/icons/ArrowRightOutlined';
 
 import ModalPersonAdd from '../ModalPersonAdd';
@@ -67,19 +67,18 @@ const useStyles = makeStyles((theme)=> ({
 }));
 
 function CandidatesDashboard({ reducer, interns }){
-    let { slug } = useParams();
+    let { idInterviewer } = useParams();
     let history = useHistory();
     const classes = useStyles();
     const dispatch = useDispatch();
     const [idSelected, setID] = useState();
     const [interviewerSelected, setInterviewrSelected] = useState(interns);
     const [urlQuestions, setURLQuestions] = useState();
-    const [urlInformation, setURLInformation] = useState();
 
     useEffect(()=> {
         let index = [];
         index = interns.filter(i => {
-            return i.id === parseInt(slug)
+            return i.id === parseInt(idInterviewer)
         });
         setInterviewrSelected(index[0]);
         let urlQuestion = "/questions/" + interviewerSelected.id +"/" + idSelected;
@@ -92,7 +91,7 @@ function CandidatesDashboard({ reducer, interns }){
 
     const handleSeeMore = (params) =>{
         let id = params.rowIndex;
-        history.push("/candidate/" + slug + "/" + id)
+        history.push("/candidate/" + idInterviewer + "/" + id)
     }
 
     const handleSaveData = () =>{
@@ -110,17 +109,15 @@ function CandidatesDashboard({ reducer, interns }){
             headerName: 'Candidates Information', 
             width: 240,
             renderCell: (params) => (
-                <Link to={{ pathname: urlInformation }} className={classes.a}> 
-                    <Button
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    style={{ width: '100%', textTransform: 'inherit'}}
-                    onClick={() =>handleSeeMore(params)}
-                    > 
-                    See More <ArrowRightOutlinedIcon /> 
-                    </Button>
-                </Link>
+                <Button
+                variant="contained"
+                color="secondary"
+                size="small"
+                style={{ width: '70%', textTransform: 'inherit'}}
+                onClick={() =>handleSeeMore(params)}
+                > 
+                See More <ArrowRightOutlinedIcon /> 
+                </Button>
             )
         },
     ];

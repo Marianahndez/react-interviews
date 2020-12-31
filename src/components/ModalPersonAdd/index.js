@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { 
+    makeStyles, 
+    Dialog, 
+    DialogContent, 
+    TextField, 
+    Button, 
+    Fab 
+} from '@material-ui/core';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import EditIcon from '@material-ui/icons/Edit';
-import Fab from '@material-ui/core/Fab';
-import { Dialog, DialogContent, TextField, FormControl, Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
-import { addInterviewer, editInterviewer, deleteInterviewer, addCandidate, editCandidate } from '../../Redux/Interview/interviewActions';
-
+import { 
+    addInterviewer, 
+    editInterviewer, 
+    deleteInterviewer, 
+    addCandidate, 
+    editCandidate 
+} from '../../Redux/Interview/interviewActions';
 
 const modalStyles = makeStyles((theme)=> ({
     titleFormat: {
