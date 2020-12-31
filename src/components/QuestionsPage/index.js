@@ -32,7 +32,7 @@ const questions = [
 
 function Questions(props){
     let history = useHistory();
-    let { slug } = useParams();
+    let { idInterviewer, idCandidate } = useParams();
     const dispatch = useDispatch();
     const [selectedValue, setSelectedValue] = useState("true");
     const [candidate, setCandidate] = useState({});
@@ -41,9 +41,9 @@ function Questions(props){
         let aux = {}
 
         aux = props.reducer.filter(i => {
-            return i.id === parseInt(slug)
+            return i.id === parseInt(idCandidate)
         });
-        setCandidate(aux);
+        setCandidate(aux[0]);
     },[])
 
     const handleChange = (event) => {        
@@ -52,14 +52,15 @@ function Questions(props){
     };
 
     const handleNext = () =>{
-        history.push("/summary")
+        history.push("/summary/" + idCandidate)
     }
 
     const handleAnswers = (e) => {
         e.preventDefault();
-        candidate[slug].questions = questions;
+        candidate.questions = questions;
         dispatch(editCandidate(candidate));
-        history.push("/summary")
+        history.push("/summary/" + idCandidate)
+        console.log('go tosummer: ', candidate)
     }
 
     const handleChangeComments = (e) => {

@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import { Dialog, DialogContent, FormControlLabel, FormGroup, Button, Card, CardContent, Avatar, Checkbox, ListItemIcon, ListItem, ListItemAvatar } from '@material-ui/core';
 
+import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExtensionIcon from '@material-ui/icons/Extension';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
@@ -99,6 +100,11 @@ const candidateStyles = makeStyles((theme)=> ({
         '& button' : {
           float: 'right'  
         }
+    },
+    summaryBtn: {
+        textTransform: 'inherit',
+        margin: theme.spacing(2, 0),
+        position: 'absolute'
     }
 }))
 
@@ -163,7 +169,7 @@ function Modal({
 }
 
 function CandidateInformation(props){
-    let { slug } = useParams();
+    let { idInterviewer, idCandidate } = useParams();
     const dispatch = useDispatch();
     let history = useHistory();
     const classes = candidateStyles();
@@ -171,19 +177,17 @@ function CandidateInformation(props){
     const [skills, setSkills] = useState([]);
     const [open, setOpen] = useState(false);
 
-
     useEffect(()=>{
         let aux = {}
         aux = props.reducer.filter(i => {
-            return i.id === parseInt(slug)
+            return i.id === parseInt(idCandidate)
         });
         setCandidate(aux[0]);
         
         if(candidate.skills !== undefined){
             setSkills(candidate.skills)
         }
-        console.log('skills:  ', skills)
-    },[])
+    },[candidate, skills])
 
     const handleInputChange = (e, x) => {
         const newInterviewer = {...candidate};
@@ -209,10 +213,13 @@ function CandidateInformation(props){
 
     const handleSaveCandidate = () =>{
         dispatch(editCandidate(candidate))
-        history.push("/candidates")
+        history.push("/candidates/" + idInterviewer )
     }
-
-    console.log('candidate data> ', candidate)
+    
+    const handleSeeSummary = () => {
+        history.push("/summary/" + candidate.id )
+    }
+    console.log('has summary? ', candidate)
     return(
         <Grid container className={classes.paddingTop}>
             <Grid item xs={6} className={classes.flex}>
@@ -230,6 +237,9 @@ function CandidateInformation(props){
                     <p className={classes.infoText}>{candidate.email}</p>
                     <h2 className={classes.title}>Type of candidate</h2>
                     <p className={classes.infoText}>{candidate.typeCandidate}</p>
+                    <Fab variant="extended" color="secondary" aria-label="add" onClick={handleSeeSummary} disabled={(candidate.summary === false)} className={classes.summaryBtn}>
+                        <InsertDriveFileOutlinedIcon className={classes.extendedIcon} /> See Summary
+                    </Fab>
                 </Grid>
                 </CardContent>
                 </Card>
@@ -254,7 +264,7 @@ function CandidateInformation(props){
                             handleAddSkills={(inputSkills)=>handleSaveSkills(inputSkills)}
                             />
                             
-                            {skills === [] ?
+                            {candidate.skills === [] ?
                                 <p className={classes.titleAddSkills}>No skills found</p>
                                 :
                                 <div>

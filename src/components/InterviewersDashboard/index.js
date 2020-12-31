@@ -81,8 +81,10 @@ function InterviewerDashboard({ reducer }){
         active: false
     })
 
-    const handleNext = () =>{
-        history.push("/candidates")
+    const handleNext = (i) =>{
+        const aux = reducer.findIndex(index => index.id === i)
+
+        history.push("/candidates/" + aux)
     }
 
     const handleSelectCard = (i) =>{
@@ -133,7 +135,7 @@ function InterviewerDashboard({ reducer }){
             </div> }
 
             <div className={classes.buttonsContainer}>
-                <Button variant="contained" color="secondary" disabled={(active.id === null)} onClick={handleNext} className={classes.btnStyle}> Continue <ArrowForwardIosIcon className={classes.iconNext} /> </Button>
+                <Button variant="contained" color="secondary" disabled={(active.id === null)} onClick={()=>handleNext(active.id)} className={classes.btnStyle}> Continue <ArrowForwardIosIcon className={classes.iconNext} /> </Button>
             </div>
         </React.Fragment>
     )

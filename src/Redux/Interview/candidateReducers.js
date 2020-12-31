@@ -19,9 +19,11 @@ const reducer = (state = INITIAL_STATE, action) => {
                 typeCandidate: action.payload.typeCandidate,
                 skills: [],
                 score: 20,
-                interviewerId: action.payload.interviewerId,
+                interviewerEID: action.payload.interviewerEID,
                 questions: [],
-                button: action.payload.button
+                button: action.payload.button,
+                summary: action.payload.summary,
+                summaryComments: action.payload.summaryComments
             })
             return [...state]
         case EDIT_CANDIDATE:

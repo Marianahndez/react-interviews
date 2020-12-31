@@ -93,9 +93,11 @@ function ModalPersonAdd(props){
         typeCandidate: '',
         skills: [],
         score: 20,
-        interviewerId: null,
+        interviewerEID: '',
         questions: [],
-        button: ''
+        button: '',
+        summary: false,
+        summaryComments: ''
     });
 
     useEffect(()=>{
@@ -152,9 +154,11 @@ function ModalPersonAdd(props){
             typeCandidate: '',
             skills: [],
             score: 20,
-            interviewerId: null,
+            interviewerEID: '',
             questions: [],
-            button: ''
+            button: '',
+            summary: false,
+            summaryComments: ''
         })
         setOpen(false)
     }

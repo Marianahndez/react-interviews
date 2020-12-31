@@ -78,13 +78,13 @@ function Template(props){
           case 1:
             return ( <InterviewerDashboard reducer={interviewersList} /> )
           case 2:
-            return ( <CandidatesDashboard reducer={candidatesList} /> )
+            return ( <CandidatesDashboard reducer={candidatesList} interns={interviewersList} /> )
           case 3:
             return ( <CandidateInformation reducer={candidatesList} /> )
           case 4:
             return ( <QuestionsPage reducer={candidatesList} /> )
           case 5:
-            return ( <SummaryPage /> )
+            return ( <SummaryPage reducer={candidatesList} /> )
           default:
             return ( <div>Not available.</div> )
         }

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { editCandidate } from '../../Redux/Interview/interviewActions';
 
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -64,22 +66,23 @@ const useStyles = makeStyles((theme)=> ({
     },
 }));
 
-function CandidatesDashboard({ reducer }){
+function CandidatesDashboard({ reducer, interns }){
+    let { slug } = useParams();
     let history = useHistory();
     const classes = useStyles();
+    const dispatch = useDispatch();
     const [idSelected, setID] = useState();
-    // const [candidateSelected, setCandidateSelected] = useState();
+    const [interviewerSelected, setInterviewrSelected] = useState(interns);
     const [urlQuestions, setURLQuestions] = useState();
     const [urlInformation, setURLInformation] = useState();
 
     useEffect(()=> {
-        // let index = [];
-        // index = reducer.filter(i => {
-        //     return i.id === idSelected
-        // });
-        // setCandidateSelected(index);
-
-        let urlQuestion = "/questions/" + idSelected;
+        let index = [];
+        index = interns.filter(i => {
+            return i.id === parseInt(slug)
+        });
+        setInterviewrSelected(index[0]);
+        let urlQuestion = "/questions/" + interviewerSelected.id +"/" + idSelected;
         setURLQuestions(urlQuestion);
     },[idSelected])
 
@@ -89,7 +92,12 @@ function CandidatesDashboard({ reducer }){
 
     const handleSeeMore = (params) =>{
         let id = params.rowIndex;
-        history.push("/candidate/" + id)
+        history.push("/candidate/" + slug + "/" + id)
+    }
+
+    const handleSaveData = () =>{
+        reducer[idSelected].interviewerEID = interviewerSelected.eid;
+        dispatch(editCandidate(reducer[idSelected]))
     }
       
     const columns = [
@@ -150,7 +158,7 @@ function CandidatesDashboard({ reducer }){
             <div className={classes.buttonsContainer}>
                 <Button variant="contained" color="secondary" onClick={handleBack} className={classes.btnStyle}><ArrowBackIosIcon className={classes.iconBack} /> Back </Button>
                 <Link to={{ pathname: urlQuestions }}> 
-                    <Button variant="contained" color="secondary" className={classes.btnStyleRight}> 
+                    <Button onClick={handleSaveData} variant="contained" color="secondary" className={classes.btnStyleRight}> 
                         Continue <ArrowForwardIosIcon className={classes.iconNext} />
                     </Button>
                 </Link>
