@@ -187,7 +187,7 @@ function CandidateInformation(props){
         if(candidate.skills !== undefined){
             setSkills(candidate.skills)
         }
-    },[candidate, skills])
+    },[candidate, skills, idCandidate])
 
     const handleInputChange = (e, x) => {
         const newInterviewer = {...candidate};

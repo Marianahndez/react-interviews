@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import { Dialog, DialogContent, TextField, FormControl, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,6 +33,15 @@ const modalStyles = makeStyles((theme)=> ({
     }
 }))
 
+const buttonsStyles = makeStyles((theme)=> ({
+    display: {
+        display: 'block'
+    },
+    notDisplay: {
+        display: 'none'
+    }
+}))
+
 function Modal({
     type,
     openDialog,
@@ -41,6 +52,7 @@ function Modal({
     closeDialog,
     handleAddCandidate,
     handleAddInterviewer,
+    handleEditInterviewer,
     keyID
 }){
     const classes = modalStyles();
@@ -48,13 +60,17 @@ function Modal({
         <Dialog open={openDialog} onClose={closeDialog} fullWidth={true} maxWidth={'sm'}>
             <h2 className={classes.titleFormat}>{type}</h2>
             <DialogContent>
-            { type === 'Add Interviewer' ?
+            { (type !== 'Add Candidate') ?
                 <form autoComplete="off" className="form" onSubmit={handleAddInterviewer}>
                     <TextField name="name" label="Name" value={person.name} onChange={onChangeInputPerson} required className={classes.inputForm} />
-                    <TextField name="id" label="ID" value={keyID} onChange={onChangeInputPerson} required className={classes.inputForm}/>
+                    <TextField name="id" disabled label="ID" value={keyID} onChange={onChangeInputPerson} required className={classes.inputForm}/>
                     <TextField name="eid" label="EID" value={person.eid} onChange={onChangeInputPerson} required className={classes.inputForm}/>
                     <div className={classes.btnsContainer}>
+                        {type === 'Add Interviewer' ? 
                         <Button variant="contained" color="secondary" type="submit" onClick={handleAddInterviewer} className={classes.btnStyle}>Save</Button>
+                        :
+                        <Button variant="contained" color="secondary" type="submit" onClick={handleEditInterviewer} className={classes.btnStyle}>Save Cahnges</Button>
+                        }
                         <Button variant="contained" color="info" onClick={closeDialog} className={classes.btnStyle}>Cancel</Button>
                     </div>
                 </form>
@@ -78,8 +94,11 @@ function Modal({
 function ModalPersonAdd(props){
     const [typeOfPerson, setTypeOfPerson] = useState("");
     const [open, setOpen] = useState(false);
+    const [active, setActive] = useState(false);
     const [id, setID] = useState(0);
     const dispatch = useDispatch();
+    const classes = buttonsStyles();
+
     const [person, setPerson] = useState({
         name: '',
         id: id,
@@ -106,7 +125,19 @@ function ModalPersonAdd(props){
         }else{
             setID(props.id)
         }
+
+        if(props.active !== "null") {
+            setActive(true)
+            setID(parseInt(props.active))
+            console.log('active m: ', id)
+        }
+
+        if(props.id === 0){
+            setActive(false)
+            setID(0)
+        }
     },[props])
+    console.log('props m: ', props)
 
     const handleInputChangePerson = (e, x) => {
         const newInterviewer = {...person};
@@ -130,6 +161,25 @@ function ModalPersonAdd(props){
     const handleTypeOfPerson = (x) => {
         setOpen(true)
         setTypeOfPerson(x)
+
+        if(x === "Edit Interviewer"){
+            let aux = {}
+            aux = props.reducer.filter(i => {
+                return i.id === parseInt(props.active)
+            });
+            setPerson(aux[0]);
+            setID(aux[0].id)
+            console.log('person m: ', aux[0])
+        }else{
+            setPerson({
+                name: '',
+                id: id,
+                eid: '',
+                candidates: 0       
+            })
+            setID(props.id)
+        }
+
     }
 
     const postInterviewer = (e) => {
@@ -144,6 +194,12 @@ function ModalPersonAdd(props){
         setOpen(false)
     }
 
+    const handleEditInterviewer = (e) => {
+        e.preventDefault();
+        dispatch(editInterviewer(person));
+        setOpen(false)
+    }
+    
     const postCandidate = (e) => {
         e.preventDefault();
         dispatch(addCandidate(candidate));
@@ -174,12 +230,21 @@ function ModalPersonAdd(props){
             onChangeInputCandidate={handleInputChangeCandidate}
             closeDialog={handleModalClose} 
             handleAddInterviewer={postInterviewer}
+            handleEditInterviewer={handleEditInterviewer}
             handleAddCandidate={postCandidate}
             keyID={id}
             />
 
             <Fab color="secondary" aria-label="add" onClick={()=> handleTypeOfPerson(props.actionType)}>
                 <PersonAddOutlinedIcon />
+            </Fab>
+
+            <Fab color="secondary" aria-label="add" onClick={()=> handleTypeOfPerson("Edit Interviewer")} className={`${!active ? classes.notDisplay : classes.display}`}>
+                <EditIcon />
+            </Fab>
+
+            <Fab color="secondary" aria-label="add" onClick={()=> dispatch(deleteInterviewer(id))} className={`${!active ? classes.notDisplay : classes.display}`}>
+                <DeleteOutlineIcon />
             </Fab>
         </React.Fragment>
     )

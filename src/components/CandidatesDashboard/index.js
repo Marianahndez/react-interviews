@@ -130,7 +130,7 @@ function CandidatesDashboard({ reducer, interns }){
             {reducer.length !== 0 ?
                 <div className={classes.tableContainer}>
                     <div className={classes.floatButton}>
-                        <ModalPersonAdd actionType="Add Candidate" id={reducer.length} />
+                        <ModalPersonAdd actionType="Add Candidate" id={reducer.length} active="null" reducer="[]" />
                     </div>
                     <h2 className={classes.titleBold}>Canidates List</h2>
                     <DataGrid 

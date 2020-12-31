@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
 import ModalPersonAdd from '../ModalPersonAdd';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme)=> ({
     center: {
@@ -101,7 +102,7 @@ function InterviewerDashboard({ reducer }){
             <React.Fragment>
                 <h2 className={classes.titleBold}>Interviewers List</h2>
                 <div className={classes.floatButton}>
-                    <ModalPersonAdd actionType="Add Interviewer" id={reducer.length} />
+                    <ModalPersonAdd actionType="Add Interviewer" id={reducer.length} active={`${(active.id !== null) ? active.id : null}`} reducer={reducer} />
                 </div>
                 <Grid container className={classes.mainGrid}>
                 {reducer.map((element, i)=>{
@@ -130,7 +131,7 @@ function InterviewerDashboard({ reducer }){
             </React.Fragment> :
             <div className={classes.center}>
                 <p className={classes.mainText}>No interviewer has been registered</p>
-                <ModalPersonAdd actionType="Add Interviewer" />
+                <ModalPersonAdd actionType="Add Interviewer" id={0} active={`${(active.id !== null) ? active.id : null}`} reducer={reducer} />
                 <p className={classes.helpText}>Click here to add</p>
             </div> }
 

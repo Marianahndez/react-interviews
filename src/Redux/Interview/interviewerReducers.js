@@ -16,6 +16,16 @@ const reducer = (state = INITIAL_STATE, action) => {
                 candidates: action.payload.candidates
             })
             return [...state]
+        case EDIT_INTERVIEWER:
+            const aux = state.findIndex(i => i.id === action.payload.id)
+            state[aux] = action.payload;
+            return [...state]
+        case DELETE_INTERVIEWER:
+            let index = [];
+            index = state.filter(i => {
+                return i.id !== action.payload
+            })
+            return index
         default:
             return state
     }
