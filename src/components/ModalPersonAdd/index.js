@@ -8,7 +8,7 @@ import Fab from '@material-ui/core/Fab';
 import { Dialog, DialogContent, TextField, FormControl, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { addInterviewer, editInterviewer, deleteInterviewer, addCandidate } from '../../Redux/Interview/interviewActions';
+import { addInterviewer, editInterviewer, deleteInterviewer, addCandidate, editCandidate } from '../../Redux/Interview/interviewActions';
 
 
 const modalStyles = makeStyles((theme)=> ({
@@ -35,10 +35,14 @@ const modalStyles = makeStyles((theme)=> ({
 
 const buttonsStyles = makeStyles((theme)=> ({
     display: {
-        display: 'block'
+        display: 'block', 
     },
     notDisplay: {
         display: 'none'
+    },
+    marginBtn: {
+        display: 'block', 
+        margin: theme.spacing(2, 0)
     }
 }))
 
@@ -51,16 +55,18 @@ function Modal({
     onChangeInputCandidate,
     closeDialog,
     handleAddCandidate,
+    handleEditCandidate,
     handleAddInterviewer,
     handleEditInterviewer,
     keyID
 }){
     const classes = modalStyles();
+    // console.log('modal values: ', candidate)
     return(
         <Dialog open={openDialog} onClose={closeDialog} fullWidth={true} maxWidth={'sm'}>
             <h2 className={classes.titleFormat}>{type}</h2>
             <DialogContent>
-            { (type !== 'Add Candidate') ?
+            { (type === 'Add Interviewer' || type === 'Edit Interviewer') ?
                 <form autoComplete="off" className="form" onSubmit={handleAddInterviewer}>
                     <TextField name="name" label="Name" value={person.name} onChange={onChangeInputPerson} required className={classes.inputForm} />
                     <TextField name="id" disabled label="ID" value={keyID} onChange={onChangeInputPerson} required className={classes.inputForm}/>
@@ -74,14 +80,18 @@ function Modal({
                         <Button variant="contained" color="info" onClick={closeDialog} className={classes.btnStyle}>Cancel</Button>
                     </div>
                 </form>
-                : 
+                :
                 <form autoComplete="off" className="form" onSubmit={handleAddCandidate}>
                     <TextField name="name" label="Name" value={candidate.name} onChange={onChangeInputCandidate} required className={classes.inputForm} />
                         <TextField name="email" label="Email" value={candidate.email} onChange={onChangeInputCandidate} required className={classes.inputForm}/>
         
                         <TextField name="typeCandidate" label="Type" value={candidate.typeCandidate} onChange={onChangeInputCandidate} required className={classes.inputForm}/>
                         <div className={classes.btnsContainer}>
+                            {type === 'Add Candidate' ? 
                             <Button variant="contained" color="secondary" type="submit" onClick={handleAddCandidate} className={classes.btnStyle}>Save</Button>
+                            :
+                            <Button variant="contained" color="secondary" type="submit" onClick={handleEditCandidate} className={classes.btnStyle}>Save Changes</Button>
+                            }
                             <Button variant="contained" color="info" onClick={closeDialog} className={classes.btnStyle}>Cancel</Button>
                         </div>
                 </form>
@@ -129,7 +139,7 @@ function ModalPersonAdd(props){
         if(props.active !== "null") {
             setActive(true)
             setID(parseInt(props.active))
-            console.log('active m: ', id)
+            // console.log('active m: ', id)
         }
 
         if(props.id === 0){
@@ -137,7 +147,7 @@ function ModalPersonAdd(props){
             setID(0)
         }
     },[props])
-    console.log('props m: ', props)
+    // console.log('props m: ', props)
 
     const handleInputChangePerson = (e, x) => {
         const newInterviewer = {...person};
@@ -155,10 +165,10 @@ function ModalPersonAdd(props){
 
     const handleModalClose = () => {
         setOpen(false)
-        console.log('close> ', open)
     }
-
+    
     const handleTypeOfPerson = (x) => {
+        // console.log('type> ', x)
         setOpen(true)
         setTypeOfPerson(x)
 
@@ -169,7 +179,7 @@ function ModalPersonAdd(props){
             });
             setPerson(aux[0]);
             setID(aux[0].id)
-            console.log('person m: ', aux[0])
+            // console.log('person m: ', aux[0])
         }else{
             setPerson({
                 name: '',
@@ -179,6 +189,31 @@ function ModalPersonAdd(props){
             })
             setID(props.id)
         }
+
+        if(x === "Edit Candidate"){
+            let aux = {}
+            aux = props.reducer.filter(i => {
+                return i.id === parseInt(props.active)
+            });
+            setCandidate(aux[0]);
+            setID(aux[0].id)
+        }else{
+            setCandidate({
+                id: id,
+                name: '',
+                email: '',
+                typeCandidate: '',
+                skills: [],
+                score: 20,
+                interviewerEID: '',
+                questions: [],
+                button: '',
+                summary: false,
+                summaryComments: ''
+            })
+            setID(props.id)
+        }
+        // console.log('candidate m: ', candidate)
 
     }
 
@@ -198,6 +233,13 @@ function ModalPersonAdd(props){
         e.preventDefault();
         dispatch(editInterviewer(person));
         setOpen(false)
+    }
+    
+    const saveEditCandidate = (e) => {
+        e.preventDefault();
+        dispatch(editCandidate(candidate));
+        setOpen(false)
+        console.log('new candidate: ', candidate)
     }
     
     const postCandidate = (e) => {
@@ -232,14 +274,22 @@ function ModalPersonAdd(props){
             handleAddInterviewer={postInterviewer}
             handleEditInterviewer={handleEditInterviewer}
             handleAddCandidate={postCandidate}
+            handleEditCandidate={saveEditCandidate}
             keyID={id}
             />
 
+
+            {props.actionType === 'Edit Candidate' ? 
+            <Fab color="secondary" aria-label="add" onClick={()=> handleTypeOfPerson(props.actionType)}>
+                <EditIcon />
+            </Fab>
+            :
             <Fab color="secondary" aria-label="add" onClick={()=> handleTypeOfPerson(props.actionType)}>
                 <PersonAddOutlinedIcon />
             </Fab>
+            }
 
-            <Fab color="secondary" aria-label="add" onClick={()=> handleTypeOfPerson("Edit Interviewer")} className={`${!active ? classes.notDisplay : classes.display}`}>
+            <Fab color="secondary" aria-label="add" onClick={()=> handleTypeOfPerson("Edit Interviewer")} className={`${!active ? classes.notDisplay : classes.marginBtn}`}>
                 <EditIcon />
             </Fab>
 

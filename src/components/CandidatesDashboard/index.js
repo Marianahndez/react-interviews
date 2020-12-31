@@ -149,7 +149,7 @@ function CandidatesDashboard({ reducer, interns }){
                 <React.Fragment>
                     <div className={classes.center}>
                         <p className={classes.mainText}>No candidate has been registered</p>
-                        <ModalPersonAdd actionType="Add Candidate" id={reducer.length} />
+                        <ModalPersonAdd actionType="Add Candidate" id={reducer.length} active="null" reducer={reducer} />
                         <p className={classes.helpText}>Click here to add</p>
                     </div>
 

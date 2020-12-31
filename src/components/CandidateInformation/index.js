@@ -14,6 +14,8 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import StarRateRoundedIcon from '@material-ui/icons/StarRateRounded';
 import { makeStyles } from '@material-ui/core';
 
+import ModalPersonAdd from '../ModalPersonAdd';
+
 const candidateStyles = makeStyles((theme)=> ({
     center: {
         textAlign: 'center'
@@ -105,6 +107,10 @@ const candidateStyles = makeStyles((theme)=> ({
         textTransform: 'inherit',
         margin: theme.spacing(2, 0),
         position: 'absolute'
+    },
+    btnEdit: {
+        position: 'relative',
+        left: '90%'
     }
 }))
 
@@ -187,7 +193,7 @@ function CandidateInformation(props){
         if(candidate.skills !== undefined){
             setSkills(candidate.skills)
         }
-    },[candidate, skills, idCandidate])
+    },[candidate, skills, idCandidate, props])
 
     const handleInputChange = (e, x) => {
         const newInterviewer = {...candidate};
@@ -219,7 +225,7 @@ function CandidateInformation(props){
     const handleSeeSummary = () => {
         history.push("/summary/" + candidate.id )
     }
-    console.log('has summary? ', candidate)
+
     return(
         <Grid container className={classes.paddingTop}>
             <Grid item xs={6} className={classes.flex}>
@@ -237,9 +243,14 @@ function CandidateInformation(props){
                     <p className={classes.infoText}>{candidate.email}</p>
                     <h2 className={classes.title}>Type of candidate</h2>
                     <p className={classes.infoText}>{candidate.typeCandidate}</p>
+                    
                     <Fab variant="extended" color="secondary" aria-label="add" onClick={handleSeeSummary} disabled={(candidate.summary === false)} className={classes.summaryBtn}>
                         <InsertDriveFileOutlinedIcon className={classes.extendedIcon} /> See Summary
                     </Fab>
+
+                    <div className={classes.btnEdit}>
+                        <ModalPersonAdd actionType="Edit Candidate" id={0} active={idCandidate} reducer={[candidate]} />
+                    </div>
                 </Grid>
                 </CardContent>
                 </Card>
