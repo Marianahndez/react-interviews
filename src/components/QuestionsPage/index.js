@@ -16,15 +16,57 @@ import { editCandidate } from '../../Redux/Interview/interviewActions';
 const questions = [
     {
         id: 0,
-        topic: 'Javascript',
-        content: 'Bla bla bla question here?',
+        topic: 'React JS',
+        content: 'Difference between Typescript and Javascript?',
         correct: "false",
         comments: ''
     },
     {
         id: 1,
+        topic: 'React JS',
+        content: 'Difference between functional and class component?',
+        correct: "false",
+        comments: ''
+    },
+    {
+        id: 2,
+        topic: 'Javascript',
+        content: 'What are the biggest challenges of working with React?',
+        correct: "false",
+        comments: ''
+    },
+    {
+        id: 3,
         topic: 'Node JS',
-        content: 'Bla bla bla question here?',
+        content: 'Do you have andy experience with Node JS?',
+        correct: "false",
+        comments: ''
+    },
+    {
+        id: 4,
+        topic: 'Angular',
+        content: 'Do you have experience with Angular?',
+        correct: "false",
+        comments: ''
+    },
+    {
+        id: 5,
+        topic: 'Angular',
+        content: 'What are the biggest challenges of working with Angular?',
+        correct: "false",
+        comments: ''
+    },
+    {
+        id: 6,
+        topic: 'Angular',
+        content: 'Wich versions of Angular have you experienced?',
+        correct: "false",
+        comments: ''
+    },
+    {
+        id: 7,
+        topic: 'Backend',
+        content: 'You have experience in backend technologies? / Which ones?',
         correct: "false",
         comments: ''
     },
@@ -87,7 +129,7 @@ function Questions(props){
                             onChange={handleChangeComments}
                             multiline
                             rows={4}
-                            defaultValue="Default Value"
+                            defaultValue="..."
                             variant="outlined"
                             />
                             <div className="btn-container">

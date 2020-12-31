@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Grid, ListItem, ListItemIcon, TextField } from '@material-ui/core';
+import { Button, Grid, ListItem, ListItemIcon, TextField, Dialog, DialogContent, Fab } from '@material-ui/core';
 import StarRateRoundedIcon from '@material-ui/icons/StarRateRounded';
+import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 
 import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -10,10 +11,7 @@ import { editCandidate } from '../../Redux/Interview/interviewActions';
 
 const summaryStyles = makeStyles((theme)=> ({
     firstRow: {
-        height: '45vh'
-    },
-    secondRow: {
-        
+        height: '50vh'
     },
     info:{
         ...theme.typography.caption,
@@ -50,8 +48,9 @@ const summaryStyles = makeStyles((theme)=> ({
         fontSize: '0.9rem'
     },
     topic: {
-        margin: theme.spacing(1, 0),
-        fontWeight: 100
+        margin: theme.spacing(0.5, 0, 0,0),
+        fontWeight: 100,
+        fontSize: '0.8rem'
     },
     form: {
         margin: theme.spacing(2),
@@ -68,14 +67,85 @@ const summaryStyles = makeStyles((theme)=> ({
             bottom: theme.spacing(4),
             textTransform: 'inherit'
         }
+    },
+    modalContainer: {
+        padding: theme.spacing(1, 3, 3, 3)
+    },
+    titleQuestions: {
+        background: '#5c007c',
+        color: '#fff',
+        padding: theme.spacing(2),
+        fontWeight: '200',
+        margin: 0
+    },
+    dataQuestions: {
+        padding: theme.spacing(1),
+        borderLeft: '1px solid',
+        borderBottom: '1px solid',
+        '& p': {
+            margin: 0,
+        }
+    },
+    dataQuestionsRight: {
+        borderLeft: '1px solid',
+        borderBottom: '1px solid',
+        borderRight: '1px solid',
+        '& p': {
+            margin: 0,
+        }
+    },
+    btnQuestions: {
+        float: 'right',
+        top: '15%',
+        right: '5%',
+        position: 'absolute',
     }
 }))
+
+function Modal({
+    openDialog,
+    closeDialog,
+    questions,
+    classes
+}){
+    return(
+        <Dialog open={openDialog} onClose={closeDialog} fullWidth={true} maxWidth={'lg'}>
+            <DialogContent>
+                <Grid container className={classes.modalContainer}>
+                    <Grid item xs={6}>
+                        <h3 className={classes.titleQuestions}>Question</h3>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <h3 className={classes.titleQuestions}>Answer</h3>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <h3 className={classes.titleQuestions}>Comments</h3>
+                    </Grid>
+                    {questions.map((element, i)=> (
+                        <React.Fragment>
+                            <Grid item xs={6} className={classes.dataQuestions}>
+                                <p >{element.content}</p>
+                            </Grid>
+                            <Grid item xs={3} className={classes.dataQuestions}>
+                                <p >{(element.correct === 'false') ? "Incorrect" : "Correct"}</p>
+                            </Grid>
+                            <Grid item xs={3} className={classes.dataQuestionsRight}>
+                                <p >{element.comments}</p>
+                            </Grid>
+                        </React.Fragment>
+                    ))}
+                </Grid>
+            </DialogContent>
+        </Dialog>
+    )
+}
 
 function Results({reducer}){
     const classes = summaryStyles();
     let { idCandidate } = useParams();
     let history = useHistory();
     const dispatch = useDispatch();
+    const [open, setOpen] = useState();
     const [candidate, setCandidate] = useState({
         id: idCandidate,
         name: '',
@@ -112,6 +182,14 @@ function Results({reducer}){
         history.push("/")
     }
 
+    const handleModalQuestions = () =>{
+        setOpen(true)
+    }
+
+    const handleModalClose = () =>{
+        setOpen(false);
+    }
+
     return(
         <Grid container>
             <Grid container className={classes.firstRow}>
@@ -143,7 +221,16 @@ function Results({reducer}){
                     ))}
                 </Grid>
                 <Grid item xs={4} className={classes.space}>
+                    <Modal
+                    openDialog={open} 
+                    questions={candidate.questions}
+                    closeDialog={handleModalClose} 
+                    classes={classes}
+                    />
                     <h3 className={classes.title}>Questions correct</h3> 
+                    <Fab color="secondary" aria-label="add" className={classes.btnQuestions} onClick={handleModalQuestions}>
+                        <InsertDriveFileOutlinedIcon />
+                    </Fab>
                     <hr/>
                     {candidate.questions.map((element, i)=> (
                     <Grid container>
